@@ -1,0 +1,37 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Subway Information</title>
+    <!-- 导入Bootstrap的CSS文件 -->
+     <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1/css/bootstrap.min.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>地铁信息查询</h1>
+        {% if error_message %}
+            <div class="alert alert-danger" role="alert">
+                {{ error_message }}
+            </div>
+        {% endif %}
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="station_name" class="form-label">请输入车站名称：</label>
+                <input type="text" class="form-control" id="station_name" name="station_name" required>
+            </div>
+            <button type="submit" class="btn btn-primary">查询</button>
+        </form>
+        {% if station %}
+            <div class="mt-4">
+                <h2>{{ station.name }}</h2>
+                <!-- 显示其他查询结果信息 -->
+            </div>
+        {% endif %}
+    </div>
+    <!-- 导入Bootstrap的JS文件 -->
+    <script src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.js' %}"></script>
+</body>
+</html>

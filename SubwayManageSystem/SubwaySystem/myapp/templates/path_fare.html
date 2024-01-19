@@ -1,0 +1,172 @@
+<!-- path_fare.html -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>路径查询</h2>
+    <form id="query-form" method="post" action="/path-fare/">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="start-line">出发线路：</label>
+                    <select class="form-control" name="start-line" id="start-line">
+                        {% for line in lines %}
+                        <option value="{{ line.name }}">{{ line.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="start-station">出发站：</label>
+                    <select class="form-control" name="start-station" id="start-station">
+                        <!-- 根据选择的出发线路动态生成选项 -->
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="end-line">目标线路：</label>
+                    <select class="form-control" name="end-line" id="end-line">
+                        {% for line in lines %}
+                        <option value="{{ line.name }}">{{ line.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="end-station">目标站：</label>
+                    <select class="form-control" name="end-station" id="end-station">
+                        <!-- 根据选择的目标线路动态生成选项 -->
+                    </select>
+                </div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">查询</button>
+    </form>
+
+    <div id="result" class="mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <!-- 最少换乘路线 -->
+                <h3>最少换乘</h3>
+                <p>站点数量: {{ total_stations1 }}</p>
+                <p>换乘次数: {{ transfer_count1 }}</p>
+                <ul>
+                    {% for station in least_transfer_route %}
+                    <li>{{ station }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <!-- 最少站点路线 -->
+                <h3>最少站点</h3>
+                <p>站点数量: {{ total_stations2 }}</p>
+                <p>换乘次数: {{ transfer_count2 }}</p>
+                <ul>
+                    {% for station in least_stations_route %}
+                    <li>{{ station }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+<script src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+<script>
+$(document).ready(function() {
+    function getStations(lineSelect, stationSelect) {
+        var selectedLine = lineSelect.val(); // 获取选择的线路
+        var stationSelect = stationSelect; // 车站选择框
+
+        // 发起异步请求，根据选择的线路获取对应的车站列表
+        $.ajax({
+            url: '/get-stations/',  // 替换为您的服务器端处理请求的URL
+            method: 'GET',
+            data: { line: selectedLine },
+            success: function(response) {
+                // 清空车站选择框的选项
+                stationSelect.empty();
+
+                // 根据返回的车站列表动态生成选项
+                for (var i = 0; i < response.stations.length; i++) {
+                    var station = response.stations[i];
+                    stationSelect.append('<option value="' + station + '">' + station + '</option>');
+                }
+            },
+            error: function(xhr, status, error) {
+                // 请求失败时的处理
+                console.log("Error:", error);
+                alert("请求失败，请稍后重试。");
+            }
+        });
+    }
+
+    // 在页面加载完成后调用函数，获取起始线路和目标线路的车站列表
+    getStations($('#start-line'), $('#start-station'));
+    getStations($('#end-line'), $('#end-station'));
+
+    // 当出发线路选择框的值发生变化时，调用函数获取对应的出发车站列表
+    $('#start-line').change(function() {
+        getStations($('#start-line'), $('#start-station'));
+    });
+
+    // 当目标线路选择框的值发生变化时，调用函数获取对应的目标车站列表
+    $('#end-line').change(function() {
+        getStations($('#end-line'), $('#end-station'));
+    });
+
+    // 当查询按钮点击时的处理函数
+    $('#query-form').submit(function(event) {
+        event.preventDefault();  // 阻止表单的默认提交行为
+
+        // 获取用户选择的出发站和目标站
+        var startStation = $('#start-station').val();
+        var endStation = $('#end-station').val();
+
+        // 发起异步请求，向后端发送出发站和目标站
+        $.ajax({
+            url: '/get_route/',  // 替换为您的服务器端处理请求的URL
+            method: 'POST',
+            data: {
+                'start-station': startStation,
+                'end-station': endStation,
+                'csrfmiddlewaretoken': '{{ csrf_token }}'  // 添加csrfmiddlewaretoken字段
+            },
+            success: function(response) {
+                // 更新最少换乘路线
+                $('#result .col-md-6:first-child h3').html('最少换乘');
+                $('#result .col-md-6:first-child p:eq(0)').html('站点数量: ' + response.total_stations1);
+                $('#result .col-md-6:first-child p:eq(1)').html('换乘次数: ' + response.transfer_count1);
+                $('#result .col-md-6:first-child ul').empty();
+                for (var i = 0; i < response.least_transfer_route.length; i++) {
+                    var station = response.least_transfer_route[i];
+                    $('#result .col-md-6:first-child ul').append('<li>' + station + '</li>');
+                }
+
+                // 更新最少站点路线
+                $('#result .col-md-6:last-child h3').html('最少站点');
+                $('#result .col-md-6:last-child p:eq(0)').html('站点数量: ' + response.total_stations2);
+                $('#result .col-md-6:last-child p:eq(1)').html('换乘次数: ' + response.transfer_count2);
+                $('#result .col-md-6:last-child ul').empty();
+                for (var j = 0; j < response.least_stations_route.length; j++) {
+                    var station = response.least_stations_route[j];
+                    $('#result .col-md-6:last-child ul').append('<li>' + station + '</li>');
+                }
+            },
+            error: function(xhr, status, error) {
+                // 请求失败时的处理
+                console.log("Error:", error);
+                alert("请求失败，请稍后重试。");
+            }
+        });
+    });
+
+});
+</script>
+{% endblock %}

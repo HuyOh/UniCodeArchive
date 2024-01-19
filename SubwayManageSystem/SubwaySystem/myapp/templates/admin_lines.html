@@ -1,0 +1,66 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-5">
+            <h2>地铁线路管理</h2>
+        </div>
+        <div class="col-md-5 text-right">
+            <a href="/add_line/" class="btn btn-primary">添加线路</a>
+        </div>
+    </div>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>线路</th>
+            <th>number</th>
+            <th>颜色</th>
+            <th>起始站</th>
+            <th>终点站</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for line in lines %}
+        <tr>
+            <td>
+                <span class="line-color" style="background-color: {{ line.color }}"></span>
+                <a href="{% url 'edit_line' line.name %}">{{ line.name }}</a>
+            </td>
+            <td>{{ line.number }}</td>
+            <td>{{ line.color }}</td>
+            <td>{{ line.start_station.name }}</td>
+            <td>{{ line.end_station.name }}</td>
+            <td>
+                <a href="{% url 'edit_line' line.name %}" class="btn btn-primary">编辑</a>
+                <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#confirmDeleteModal{{ line.name }}">删除</a>
+                <!-- 删除确认模态框 -->
+                <div class="modal fade" id="confirmDeleteModal{{ line.name }}" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmDeleteModalLabel">确认删除</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>您确定要删除线路 "{{ line.name }}" 吗？</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                                <a href="{% url 'delete_line' line.name %}" class="btn btn-danger">确认删除</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 删除确认模态框结束 -->
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

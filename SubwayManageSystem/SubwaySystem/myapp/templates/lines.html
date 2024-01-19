@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+<!--    <h1>地铁线路</h1>-->
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>线路</th>
+            <th>起始站</th>
+            <th>终点站</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for line in lines %}
+        <tr>
+            <td>
+                <span class="line-color" style="background-color: {{ line.color }}"></span>
+                <a href="{% url 'stations' line.name %}">{{ line.name }}</a>
+            </td>
+            <td>{{ line.start_station.name }}</td>
+            <td>{{ line.end_station.name }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="line-heading">
+        <span class="line-color" style="background-color: {{ line.color }}"></span>
+        <div class="line-name">{{ line.name }}</div>
+    </div>
+    <ul class="list-group">
+        {% for station in stations %}
+        <li class="list-group-item">
+            <span class="station-icon"></span>
+            <div class="station-info">
+                <div class="station-name">{{ station.name }}</div>
+                {% if station.transfer_lines %}
+                <div class="transfer-lines">
+                    换乘线路:
+                    {% for transfer_line in station.transfer_lines %}
+                    <span class="line-color" style="background-color: {{ transfer_line.color }}"></span>
+                    <span class="transfer-line">{{ transfer_line.name }}</span>
+                    {% if not forloop.last %}, {% endif %}
+                    {% empty %}
+                    无
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

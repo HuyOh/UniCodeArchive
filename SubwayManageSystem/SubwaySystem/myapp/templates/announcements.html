@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>通知公告</h1>
+    <div class="news-list">
+        {% for announcement in announcements %}
+            <div class="news-item">
+                <h2 class="news-title">{{ announcement.title }}</h2>
+                <div class="news-meta">{{ announcement.created_time }}</div>
+                <div class="news-content">{{ announcement.content }}</div>
+            </div>
+        {% empty %}
+            <p>暂无通知公告。</p>
+        {% endfor %}
+    </div>
+{% endblock %}

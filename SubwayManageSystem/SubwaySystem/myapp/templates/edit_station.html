@@ -1,0 +1,35 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>编辑站点</h2>
+
+    <!-- 编辑站点表单 -->
+    <form action="{% url 'edit_station' station.name %}" method="POST">
+        {% csrf_token %}
+
+        <!-- 车站名称 -->
+        <div class="form-group">
+            <label for="station_name">车站名称:</label>
+            <input type="text" class="form-control" id="station_name" name="station_name" value="{{ station.name }}" required>
+        </div>
+
+        <!-- 车站经度 -->
+        <div class="form-group">
+            <label for="station_longitude">车站经度:</label>
+            <input type="text" class="form-control" id="station_longitude" name="station_longitude" value="{{ station.longitude }}" required>
+        </div>
+
+        <!-- 车站纬度 -->
+        <div class="form-group">
+            <label for="station_latitude">车站纬度:</label>
+            <input type="text" class="form-control" id="station_latitude" name="station_latitude" value="{{ station.latitude }}" required>
+        </div>
+
+        <!-- 其他字段和提交按钮 -->
+        <!-- ... -->
+
+        <button type="submit" class="btn btn-primary">保存</button>
+    </form>
+</div>
+{% endblock %}

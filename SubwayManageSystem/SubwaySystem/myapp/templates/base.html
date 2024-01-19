@@ -1,0 +1,173 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地铁信息管理和查询网站</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap-3.4.1/css/bootstrap.min.css' %}">
+    <style>
+        /* 自定义样式 */
+        /**** base.html ****/
+        body {
+            padding-top: 70px;
+            padding-bottom: 50px;
+            background-color: #f1f1f1;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 240px;
+            height: 100%;
+            background-color: #333;
+            color: #fff;
+            overflow-y: auto;
+        }
+
+        .sidebar-brand {
+            padding: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .sidebar-nav {
+            margin-top: 20px;
+            padding-left: 0;
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            margin: 0;
+            line-height: 40px;
+        }
+
+        .sidebar-nav li a {
+            display: block;
+            padding: 10px 15px;
+            color: #ccc;
+            text-decoration: none;
+        }
+
+        .sidebar-nav li a:hover,
+        .sidebar-nav li a:focus {
+            background-color: #222;
+            color: #fff;
+        }
+
+        .content {
+            margin-left: 240px;
+            background-color: #fff;
+            padding: 20px;
+            border: 1px solid #e7e7e7;
+            border-radius: 4px;
+        }
+
+        .footer {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 50px;
+            background-color: #333;
+            text-align: center;
+            line-height: 50px;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        /**** lines.html ****/
+        .line-color {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        /**** stations.html ****/
+        .station-icon {
+             display: inline-block;
+             width: 10px;
+             height: 10px;
+             border: 2px solid rgba(255, 0, 0, 0.5);
+             border-radius: 50%;
+             margin-right: 10px;
+             margin-top: 5px;
+             vertical-align: top; /* 添加这行代码 */
+        }
+        .line-heading {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .line-name {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .station-info {
+            display: inline-block;
+        }
+        .station-name {
+            font-weight: bold;
+        }
+        .transfer-lines {
+            margin-top: 5px;
+        }
+        .transfer-line {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        /**** Announcements.html ****/
+        .news-list {
+            margin-top: 20px;
+        }
+        .news-item {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 20px;
+        }
+        .news-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .news-meta {
+            color: #999;
+            margin-bottom: 10px;
+        }
+        .news-content {
+            color: #333;
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h2 class="sidebar-brand">地铁信息查询</h2>
+    <ul class="sidebar-nav">
+        <li><a href="/lines/">线路与车站信息</a></li>
+        <li><a href="/path-fare/">乘车路径查询</a></li>
+        <li><a href="/announcements/">通知公告</a></li>
+        <li><a href="/login/">管理员登录</a></li>
+    </ul>
+</div>
+
+<div class="content container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<footer class="footer">
+    &copy; 2023 地铁信息管理和查询网站. All rights reserved.
+</footer>
+
+<script src="{% static 'js/jquery-3.7.0.min.js' %}"></script>
+<script src="{% static 'plugins/bootstrap-3.4.1/js/bootstrap.js' %}"></script>
+</body>
+</html>

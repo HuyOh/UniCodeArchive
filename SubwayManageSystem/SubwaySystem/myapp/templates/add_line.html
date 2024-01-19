@@ -1,0 +1,49 @@
+{% extends 'admin_base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>添加线路</h2>
+
+    <!-- 添加线路表单 -->
+
+    <form action="/add_line/" method="POST">
+        {% csrf_token %}
+        <!-- 线路名称输入框 -->
+        <div class="form-group">
+            <label for="line_name">线路名称:</label>
+            <input type="text" class="form-control" id="line_name" name="line_name" required>
+        </div>
+
+        <!-- 线路颜色输入框 -->
+        <div class="form-group">
+            <label for="line_color">线路颜色:</label>
+            <input type="text" class="form-control" id="line_color" name="line_color" required>
+        </div>
+
+        <!-- 起始站选择框 -->
+        <div class="form-group">
+            <label for="start_station">起始站:</label>
+            <select class="form-control" id="start_station" name="start_station" required>
+                {% for station in stations %}
+                <option value="{{ station.name }}">{{ station.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- 终点站选择框 -->
+        <div class="form-group">
+            <label for="end_station">终点站:</label>
+            <select class="form-control" id="end_station" name="end_station" required>
+                {% for station in stations %}
+                <option value="{{ station.name }}">{{ station.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- 其他字段和提交按钮 -->
+        <!-- ... -->
+
+        <button type="submit" class="btn btn-primary">保存</button>
+    </form>
+</div>
+{% endblock %}
