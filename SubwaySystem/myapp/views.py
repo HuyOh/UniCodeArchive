@@ -1,11 +1,19 @@
-from django.db import transaction
 from django.urls import reverse
 
-from .models import Line, Station, StationLine, Announcement
+from .models import Line
 from django.http import JsonResponse
 
 
 def lines(request):
+    """
+    这个函数用于从数据库中获取所有的线路信息，并将其渲染到'lines.html'模板中。
+
+    参数:
+        request (HttpRequest): 用户通过浏览器发送的一个请求对象。
+
+    返回:
+        HttpResponse: 包含渲染后的HTML页面的响应对象。
+    """
     allLines = Line.objects.all()  # 获取所有的线路信息
     return render(request, 'lines.html', {'lines': allLines})
 
