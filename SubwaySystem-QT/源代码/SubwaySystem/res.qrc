@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/data">
+        <file>data/demo.txt</file>
+        <file>data/outLine.txt</file>
+        <file>data/subwayLine.txt</file>
+    </qresource>
+    <qresource prefix="/icon">
+        <file>icon/exit.jpeg</file>
+        <file>icon/graph.jpeg</file>
+        <file>icon/Metro.jpeg</file>
+        <file>icon/Metro1.jpeg</file>
+        <file>icon/zoomIn.jpg</file>
+        <file>icon/zoomOut.jpg</file>
+        <file>icon/add.jpeg</file>
+        <file>icon/help.jpeg</file>
+        <file>icon/about.jpeg</file>
+        <file>icon/QT.jpeg</file>
+        <file>icon/mainWindowIcon.jpeg</file>
+    </qresource>
+</RCC>

@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icon/about.jpeg</file>
+        <file>icon/chooseFile.jpeg</file>
+        <file>icon/exit.jpeg</file>
+        <file>icon/help.jpeg</file>
+        <file>icon/QT.jpeg</file>
+        <file>icon/zoomIn.jpg</file>
+        <file>icon/zoomOut.jpg</file>
+        <file>icon/net.jpeg</file>
+    </qresource>
+    <qresource prefix="/data">
+        <file>data/graph1.txt</file>
+    </qresource>
+</RCC>
