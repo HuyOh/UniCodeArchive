@@ -5,7 +5,7 @@
 - ![Alt text](photos/image.png)
 - ![Alt text](photos/image-1.png)
 - ![Alt text](photos/image-2.png)
-- [Alt text](photos/image-3.png)
+- ![Alt text](photos/image-3.png)
 - ![Alt text](photos/image-4.png)
 
 # Graph
